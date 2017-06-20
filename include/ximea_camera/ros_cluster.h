@@ -30,7 +30,7 @@ class RosCluster {
     explicit RosCluster(int num_cams);
     explicit RosCluster(std::vector < std::string > filenames);
     void addCamera(boost::shared_ptr<RosDriver> xd);
-    void removeCamera(int serial_no);
+    void removeCamera(std::string serial_no);
 
     // cluster functions
     void clusterInit();
@@ -45,10 +45,10 @@ class RosCluster {
     }
 
     // individual camera functions (encapsulated for thread security)
-    void setImageDataFormat(int serial_no, std::string s);
+    void setImageDataFormat(std::string serial_no, std::string s);
 
  private:
-    int getCameraIndex(int serial_no);
+    int getCameraIndex(std::string serial_no);
 
     std::vector<boost::shared_ptr<RosDriver> > cams_;
     std::vector<boost::thread*> threads_;

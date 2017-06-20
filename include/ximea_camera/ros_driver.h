@@ -33,8 +33,8 @@ namespace ximea_camera {
 
 class RosDriver : public Driver {
  public:
-    RosDriver(const ros::NodeHandle &nh, const ros::NodeHandle &pnh, std::string cam_name, int serial_no,
-                     std::string yaml_url);
+    RosDriver(const ros::NodeHandle &nh, const ros::NodeHandle &pnh, std::string cam_name,
+            std::string serial_no, std::string yaml_url);
     RosDriver(const ros::NodeHandle &nh, const ros::NodeHandle &pnh, std::string file_name);
     explicit RosDriver(const ros::NodeHandle &nh, const ros::NodeHandle &pnh);
     virtual void setImageDataFormat(std::string s);

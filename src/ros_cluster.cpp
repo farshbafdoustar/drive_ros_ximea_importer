@@ -41,7 +41,7 @@ RosCluster::RosCluster(std::vector<std::string> filenames) {
         ros::NodeHandle nh(std::string("/") + cam_name);
 
         boost::shared_ptr<RosDriver> RosDriver_ptr(
-                    new RosDriver(nh, filenames[i]));
+                    new RosDriver(nh, nh, filenames[i])); // todo: is the 2nd arg ok?
 
         addCamera(RosDriver_ptr);
     }
@@ -58,7 +58,7 @@ void RosCluster::addCamera(boost::shared_ptr<RosDriver> xd) {
     ROS_INFO_STREAM("done camera add");
 }
 
-void RosCluster::removeCamera(int serial_no) {
+void RosCluster::removeCamera(std::string serial_no) {
     if (devices_open_) {
         clusterEnd();
     }
@@ -141,7 +141,7 @@ void RosCluster::clusterPublishImageAndCamInfo() {
     }
 }
 
-int RosCluster::getCameraIndex(int serial_no) {
+int RosCluster::getCameraIndex(std::string serial_no) {
     for (int i = 0; i < cams_.size(); i++) {
         if (serial_no == cams_[i]->getSerialNo()) {
             return i;
@@ -150,7 +150,7 @@ int RosCluster::getCameraIndex(int serial_no) {
     return -1;
 }
 
-void RosCluster::setImageDataFormat(int serial_no, std::string s) {
+void RosCluster::setImageDataFormat(std::string serial_no, std::string s) {
     int idx;
     if (idx = getCameraIndex(serial_no) != -1) {
         cams_[idx]->setImageDataFormat(s);

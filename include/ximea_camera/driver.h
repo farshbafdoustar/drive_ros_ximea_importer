@@ -37,8 +37,9 @@ namespace ximea_camera {
 class Driver{
  public:
     // if no serial no is specified select the first cam on the bus
-    explicit Driver(int serial_no = 0 , std::string cam_name = "");
+    explicit Driver(std::string serial_no, std::string cam_name);
     explicit Driver(std::string file_name);
+    explicit Driver();
 
     int readParamsFromFile(std::string file_name);
     virtual void applyParameters();
@@ -54,7 +55,7 @@ class Driver{
     void acquireImage();
     void triggerDevice();
 
-    int getSerialNo() const {
+    std::string getSerialNo() const {
         return serial_no_;
     }
 
@@ -98,14 +99,13 @@ class Driver{
     int bayer_filter_array_;
 
     // variables for ximea api internals
-    int serial_no_;
+    std::string serial_no_;
     int cams_on_bus_;
     int bandwidth_safety_margin_;
     int frame_rate_;
     int bandwidth_;
 
     float allocated_bandwidth_;
-
 
  private:
     void assignDefaultValues();

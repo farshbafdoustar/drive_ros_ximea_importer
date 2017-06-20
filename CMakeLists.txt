@@ -6,7 +6,7 @@ project(ximea_camera)
 ## is used, also find other catkin packages
 
 #use PkgConfig
-find_package(PkgConfig REQUIRED)
+#find_package(PkgConfig REQUIRED)
 
 # This driver uses Boost threads
 find_package(Boost REQUIRED COMPONENTS thread)
@@ -14,18 +14,18 @@ find_package(Boost REQUIRED COMPONENTS thread)
 # This driver uses ximea xiapi, if xiapi was installed
 # using https://github.com/fishpepper/ximea_api_installer
 # we can use the pkg config file for this:
-pkg_search_module(XIMEA xiapi>=4.3.6)
-IF (XIMEA_FOUND)
-  MESSAGE("-- using ximea xiAPI version ${XIMEA_VERSION} from ${XIMEA_PREFIX}")
-  SET(XIMEA_INCLUDE_PATH ${XIMEA_INCLUDE_DIRS})
-  SET(XIMEA_LIBRARY_PATH ${XIMEA_LIBRARY_DIRS})
-  SET(XIMEA_LIBRARY      ${XIMEA_LIBRARIES})
-ELSE (XIMEA_FOUND)
-  message(FATAL_ERROR "INFO: xiapi pkg config not found, will use system paths")
+#pkg_search_module(XIMEA xiapi>=4.3.6)
+#IF (XIMEA_FOUND)
+#  MESSAGE("-- using ximea xiAPI version ${XIMEA_VERSION} from ${XIMEA_PREFIX}")
+#  SET(XIMEA_INCLUDE_PATH ${XIMEA_INCLUDE_DIRS})
+#  SET(XIMEA_LIBRARY_PATH ${XIMEA_LIBRARY_DIRS})
+#  SET(XIMEA_LIBRARY      ${XIMEA_LIBRARIES})
+#ELSE (XIMEA_FOUND)
+#  message(FATAL_ERROR "INFO: xiapi pkg config not found, will use system paths")
   set(XIMEA_INCLUDE_PATH /usr/include)
   set(XIMEA_LIBRARY_PATH /usr/lib)
   set(XIMEA_LIBRARY m3api)
-ENDIF (XIMEA_FOUND)
+#ENDIF (XIMEA_FOUND)
 
 
 find_package(catkin REQUIRED COMPONENTS
@@ -182,17 +182,17 @@ target_link_libraries(ximea_camera_generate_cfg
 #############
 ## style guide ##
 #############
-set(ENABLE_CPPLINT 1)
-include(${CMAKE_CURRENT_SOURCE_DIR}/stylecheck/CpplintWrapper.cmake)
-CPPLINT_RECURSIVE(cpplint_include
-  ${CMAKE_CURRENT_SOURCE_DIR}/include
-  ${CMAKE_CURRENT_SOURCE_DIR}/include
-  ${CMAKE_CURRENT_BINARY_DIR}/include)
-CPPLINT_RECURSIVE(cpplint_src
-  ${CMAKE_CURRENT_SOURCE_DIR}/src
-  ${CMAKE_CURRENT_SOURCE_DIR}/src
-  ${CMAKE_CURRENT_BINARY_DIR}/src)
-add_dependencies(ximea_camera_node cpplint_src cpplint_include)
+#set(ENABLE_CPPLINT 1)
+#include(${CMAKE_CURRENT_SOURCE_DIR}/stylecheck/CpplintWrapper.cmake)
+#CPPLINT_RECURSIVE(cpplint_include
+#  ${CMAKE_CURRENT_SOURCE_DIR}/include
+#  ${CMAKE_CURRENT_SOURCE_DIR}/include
+#  ${CMAKE_CURRENT_BINARY_DIR}/include)
+#CPPLINT_RECURSIVE(cpplint_src
+#  ${CMAKE_CURRENT_SOURCE_DIR}/src
+#  ${CMAKE_CURRENT_SOURCE_DIR}/src
+#  ${CMAKE_CURRENT_BINARY_DIR}/src)
+#add_dependencies(ximea_camera_node cpplint_src cpplint_include)
 
 #############
 ## Install ##

@@ -23,7 +23,7 @@ All rights reserved.
 using ximea_camera::RosDriver;
 
 RosDriver::RosDriver(const ros::NodeHandle &nh, const ros::NodeHandle &pnh,
-                     std::string cam_name, int serial_no,
+                     std::string cam_name, std::string serial_no,
                      std::string yaml_url) : Driver(serial_no, cam_name) {
     commonInitialize(nh);
 }
@@ -87,9 +87,10 @@ void RosDriver::publishImage(const ros::Time & ts) {
     ros_image_.step   = image_.width * bpp_;
 
     // copy data to ros message
-    copy(reinterpret_cast<char *>(cam_buffer_),
-         (reinterpret_cast<char *>(cam_buffer_)) + cam_buffer_size_,
-         ros_image_.data.begin());
+//    copy(reinterpret_cast<char *>(cam_buffer_),
+//         (reinterpret_cast<char *>(cam_buffer_)) + cam_buffer_size_,
+//         ros_image_.data.begin());
+    memcpy(ros_image_.data.data(), cam_buffer_, image_.width * image_.height * sizeof(unsigned char));
 
     // publish message
     ros_cam_pub_.publish(ros_image_);
@@ -148,7 +149,7 @@ void RosDriver::setImageDataFormat(std::string image_format) {
         bpp_ = 3;
     } else if (image_format == std::string("XI_RGB_PLANAR")) {
         image_data_format = XI_MONO8;
-        ROS_ERROR("ximea_camera: this image format (%s) is unsupported in ROS defaulting to MONO8",
+        ROS_WARN("ximea_camera: this image format (%s) is unsupported in ROS defaulting to MONO8",
                  image_format.c_str());
         encoding_ = sensor_msgs::image_encodings::MONO8;
         bpp_ = 1;
@@ -162,8 +163,8 @@ void RosDriver::setImageDataFormat(std::string image_format) {
         case(XI_CFA_CMYG):
         case(XI_CFA_RGR):
             // fallback for invalid/unsupported values
-            ROS_ERROR("ximea_camera: unknown sensor bayer pattern, defaulting to mono8");
-            encoding_ = sensor_msgs::image_encodings::MONO8;
+            ROS_WARN("ximea_camera: unknown sensor bayer pattern, defaulting to mono8");
+        encoding_ = sensor_msgs::image_encodings::MONO8;
             break;
 
         case(XI_CFA_BAYER_RGGB):

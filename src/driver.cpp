@@ -26,7 +26,13 @@ All rights reserved.
 
 using ximea_camera::Driver;
 
-Driver::Driver(int serial_no, std::string cam_name) {
+Driver::Driver() {
+	serial_no_ = "";
+	cam_name_ = "";
+	assignDefaultValues();
+}
+
+Driver::Driver(std::string serial_no, std::string cam_name) {
     serial_no_ = serial_no;
     cam_name_ = cam_name;
     assignDefaultValues();
@@ -51,11 +57,11 @@ void Driver::assignDefaultValues() {
     camera_to_localtime_offset_ = boost::posix_time::microsec_clock::local_time();
 }
 
-Driver::Driver(std::string file_name) {
+ Driver::Driver(std::string file_name) {
     assignDefaultValues();
     ROS_INFO_STREAM("Driver: reading paramter values from file: " << file_name);
     readParamsFromFile(file_name);
-}
+ }
 
 bool Driver::errorHandling(XI_RETURN ret, std::string command,
                                  std::string param, float val) {
@@ -103,7 +109,7 @@ void Driver::openDevice() {
     // disable auto bandwidth measurements:
     setParamInt(XI_PRM_AUTO_BANDWIDTH_CALCULATION, XI_OFF, true);
 
-    if (serial_no_ == 0) {
+    if (serial_no_ == "") {
         stat = xiOpenDevice(0, &xiH_);
         errorHandling(stat, "xiOpenDevice", "");
     } else {
@@ -127,7 +133,7 @@ void Driver::openDevice() {
     // in case multiple cameras share the same bus we
     // have to manually split the overall bandwidth between devices
     // see allocated_bandwidth parameter in config file
-    limitBandwidth(allocated_bandwidth_);
+//    limitBandwidth(allocated_bandwidth_); FIXME not working, but we don't need it (yet?)
 
     fetchValues();
 
@@ -251,7 +257,7 @@ int Driver::readParamsFromFile(std::string file_name) {
 
     // FIXME: add proper exception handling!
     try {
-        serial_no_ = doc["serial_no"].as<int>();
+        serial_no_ = doc["serial_no"].as<std::string>();
     } catch (std::runtime_error) {}
 
     try {
