@@ -46,47 +46,37 @@ This software provides ROS drivers for the ximea xiQ USB 3.0 Cameras.  This driv
 1) create a configuration file for each camera.  The configuration file should be kept in the `/config` folder.  A configuration file will look as follows:
 
 ```
-serial_no: 32301951
-cam_name: "camera1"
-yaml_url: "package://mcptam/calibrations/camera1.yaml"
-exposure_time: 30000
-rect_left: 200
-rect_top: 200
-rect_height: 600
-rect_width: 900
-allocated_bandwidth : 1.0
-image_data_format: "XI_MONO8"
+serial_no: "04653450"
+cam_name: "cam_cc2017_car"
+yaml_url: "package://ximea_camera/calibrations/cali_cc2017_car.yaml"
+allocated_bandwidth: 1.0
+image_data_format: "XI_RAW8"
 ```
 * `serial_no` refers to the serial number of the camera
 * `cam_name` is the name you wish to give to the camera
 * `yaml_url` is the location of the calibration information file, which is used by the camera info manager to publish the calibration parameters
-* `exposure_time` refers to the image exposure time in microseconds
-* `rect_left, rect_top, rect_height, rect_width` are used to set the image region of interest (ROI). See the Ximea xiQ API for more information (http://www.ximea.com/support/wiki/apis/XiAPI_Manual).
 * `allocated_bandwidth` refers to the usb3 bandwidth fraction you want to assign to this camera (use 1.0 if you have one cam and 0.5 for two etc)
-* `use_cam_timestamp` enabling this (=true) will use the camera timestamp feature and a correction offest to reflect system time (EXPERIMENTAL)
 * `image_data_format`: sets the data format for the image. Currently, formats `XI_MONO16`, `XI_RGB24`, `XI_RGB32`, `XI_RAW8`, `XI_RAW16`, and `XI_MONO8` are supported   
+
+More parameters can be changed via [Dynamic Reconfigure](http://wiki.ros.org/dynamic_reconfigure). For more infos on the parameters checkout the [XiAPI Manual](http://www.ximea.com/support/wiki/apis/XiAPI_Manual). The default values can be changed in: `cfg/xiAPI.cfg`.
+
+
 
 2) Create a launch file for your camera configuration.  A typical launch file will look as follows:
 
 ```
 <launch>
-<!-- Camera Node -->
-<node name="ximea" pkg="ximea_camera" type="ximea_camera_node" output="screen" >
-  <param name="frame_rate" type="int" value="60" />
-
-  <rosparam param="camera_param_file_paths" subst_value="true">[$(find ximea_camera)/config/ximea1.yaml, $(find ximea_camera)/config/ximea2.yaml]</rosparam>
-
-</node>
+  <!-- Camera Node -->
+  <node name="ximea" pkg="ximea_camera" type="ximea_camera_node" output="screen" >
+    <rosparam param="camera_param_file_paths" subst_value="true">[$(find ximea_camera)/config/config_cc2017_car.yaml]</rosparam>
+  </node>
 
 </launch>
 ```
-The main parameters of interest are the frame rate and the file paths.
-
-* `frame_rate` corresponds to the frame rate for all of the cameras in the group.
 * `camera_param_file_paths` is a list of file names corresponding to the configuration files made for each camera in step 1.  For a single camera setup, the `camera_param_file_paths` parameter would look something like:
 
 ```
-<rosparam param="camera_param_file_paths" subst_value="true">[$(find ximea_camera)/config/ximea1.yaml]</rosparam>
+<rosparam param="camera_param_file_paths" subst_value="true">[$(find ximea_camera)/config/config_cc2017_car.yaml]</rosparam>
 ```
 
 while a three camera setup would have a list containing the file names for the configuration files of all three cameras, separated by commas:
