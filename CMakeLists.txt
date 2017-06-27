@@ -118,8 +118,8 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ximea_camera
   CATKIN_DEPENDS roscpp nodelet
-  DEPENDS system_lib TinyXML
-  DEPENDS boost
+  #DEPENDS system_lib TinyXML
+  #DEPENDS boost
 )
 
 include_directories(include)
