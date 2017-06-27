@@ -56,11 +56,7 @@ image_data_format: "XI_RAW8"
 * `cam_name` is the name you wish to give to the camera
 * `yaml_url` is the location of the calibration information file, which is used by the camera info manager to publish the calibration parameters
 * `allocated_bandwidth` refers to the usb3 bandwidth fraction you want to assign to this camera (use 1.0 if you have one cam and 0.5 for two etc)
-* `image_data_format`: sets the data format for the image. Currently, formats `XI_MONO16`, `XI_RGB24`, `XI_RGB32`, `XI_RAW8`, `XI_RAW16`, and `XI_MONO8` are supported   
-
-More parameters can be changed via [Dynamic Reconfigure](http://wiki.ros.org/dynamic_reconfigure). For more infos on the parameters checkout the [XiAPI Manual](http://www.ximea.com/support/wiki/apis/XiAPI_Manual). The default values can be changed in: `cfg/xiAPI.cfg`.
-
-
+* `image_data_format`: sets the data format for the image. Currently, formats `XI_MONO16`, `XI_RGB24`, `XI_RGB32`, `XI_RAW8`, `XI_RAW16`, and `XI_MONO8` are supported
 
 2) Create a launch file for your camera configuration.  A typical launch file will look as follows:
 
@@ -86,6 +82,8 @@ while a three camera setup would have a list containing the file names for the c
 ```
 
 3) You should now be able to plug in the cameras and launch the file created in step 2.
+
+4) More parameters can be changed via [Dynamic Reconfigure](http://wiki.ros.org/dynamic_reconfigure). For more infos on the parameters checkout the [XiAPI Manual](http://www.ximea.com/support/wiki/apis/XiAPI_Manual). The default values can be changed in: `cfg/xiAPI.cfg` (don't forget to rebuild after changing the *.cfg file).
 
 # 4) Published Topics
 
