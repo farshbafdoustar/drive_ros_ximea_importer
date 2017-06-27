@@ -43,7 +43,8 @@ This software requires the Ximea Linux Software Package.  See http://www.ximea.c
 
 This software provides ROS drivers for the ximea xiQ USB 3.0 Cameras.  This driver supports image acquisition from an arbitrary number of cameras, so long as there is sufficient bandwidth on the USB 3.0 bus to perform the data transfer. In order to operate the cameras, the serial numbers of the devices must be known.
 
-1) create a configuration file for each camera.  The configuration file should be kept in the `/config` folder.  A configuration file will look as follows:
+## 3.1) Config File
+Create a configuration file for each camera.  The configuration file should be kept in the `/config` folder.  A configuration file will look as follows:
 
 ```
 serial_no: "04653450"
@@ -54,11 +55,12 @@ image_data_format: "XI_RAW8"
 ```
 * `serial_no` refers to the serial number of the camera
 * `cam_name` is the name you wish to give to the camera
-* `yaml_url` is the location of the calibration information file, which is used by the camera info manager to publish the calibration parameters
+* `yaml_url` is the location of the calibration information file, which is used by the camera info manager to publish the calibration parameters (calibration file can be created with [ROS Camera Calibrator](http://wiki.ros.org/camera_calibration))
 * `allocated_bandwidth` refers to the usb3 bandwidth fraction you want to assign to this camera (use 1.0 if you have one cam and 0.5 for two etc)
 * `image_data_format`: sets the data format for the image. Currently, formats `XI_MONO16`, `XI_RGB24`, `XI_RGB32`, `XI_RAW8`, `XI_RAW16`, and `XI_MONO8` are supported
 
-2) Create a launch file for your camera configuration.  A typical launch file will look as follows:
+## 3.2) Launch File
+Create a launch file for your camera configuration.  A typical launch file will look as follows:
 
 ```
 <launch>
@@ -81,9 +83,11 @@ while a three camera setup would have a list containing the file names for the c
 <rosparam param="camera_param_file_paths" subst_value="true">[$(find ximea_camera)/config/ximea1.yaml, $(find ximea_camera)/config/ximea2.yaml, $(find ximea_camera)/config/ximea3.yaml]</rosparam>
 ```
 
-3) You should now be able to plug in the cameras and launch the file created in step 2.
+## 3.3) Start Launch File
+You should now be able to plug in the cameras and launch the file created in step 2.
 
-4) More parameters can be changed via [Dynamic Reconfigure](http://wiki.ros.org/dynamic_reconfigure). For more infos on the parameters checkout the [XiAPI Manual](http://www.ximea.com/support/wiki/apis/XiAPI_Manual). The default values can be changed in: `cfg/xiAPI.cfg` (don't forget to rebuild after changing the *.cfg file).
+## 3.4) Dynamic Reconfigure
+More parameters can be changed via [Dynamic Reconfigure](http://wiki.ros.org/dynamic_reconfigure). For more infos on the parameters checkout the [XiAPI Manual](http://www.ximea.com/support/wiki/apis/XiAPI_Manual). The default values can be changed in: `cfg/xiAPI.cfg` (don't forget to rebuild after changing the *.cfg file).
 
 # 4) Published Topics
 
