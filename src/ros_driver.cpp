@@ -47,6 +47,39 @@ RosDriver::RosDriver(const ros::NodeHandle &nh, const ros::NodeHandle &pnh,
     commonInitialize(nh);
 }
 
+bool RosDriver::updateCameraInfoROI(void) {
+
+  // set correct region of interest to camera info message
+  int offset_x, offset_y, width, height;
+  if(getParamInt(XI_PRM_AEAG))
+  {
+    offset_x =  getParamInt(XI_PRM_AEAG_ROI_OFFSET_X);
+    offset_y =  getParamInt(XI_PRM_AEAG_ROI_OFFSET_Y);
+    width =     getParamInt(XI_PRM_AEAG_ROI_WIDTH);
+    height =    getParamInt(XI_PRM_AEAG_ROI_HEIGHT);
+  }else{
+    offset_x =  getParamInt(XI_PRM_OFFSET_X);
+    offset_y =  getParamInt(XI_PRM_OFFSET_Y);
+    width =     getParamInt(XI_PRM_WIDTH);
+    height =    getParamInt(XI_PRM_HEIGHT);
+  }
+
+  sensor_msgs::CameraInfo camera_info = cam_info_manager_->getCameraInfo();
+
+  camera_info.roi.x_offset = offset_x;
+  camera_info.roi.y_offset = offset_y;
+  camera_info.roi.width = width;
+  camera_info.roi.height = height;
+
+  ROS_INFO_STREAM("Update Camera Info ROI: x_off=" << offset_x <<
+                                         " y_off=" << offset_y <<
+                                         " height=" << height <<
+                                         " weight=" << width);
+
+  return cam_info_manager_->setCameraInfo(camera_info);
+
+}
+
 void RosDriver::commonInitialize(const ros::NodeHandle &nh) {
     pnh_ = nh;
     cam_info_manager_ = new camera_info_manager::CameraInfoManager(pnh_, cam_name_);
@@ -300,4 +333,7 @@ void RosDriver::dynamicReconfigureCallback(const ximea_camera::xiAPIConfig &conf
             ROS_ERROR("failed to set parameter, xiapi returned an error code");
         }
     }
+
+    // update camera info
+    updateCameraInfoROI();
 }

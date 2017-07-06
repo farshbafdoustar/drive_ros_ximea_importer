@@ -52,6 +52,7 @@ class RosDriver : public Driver {
     void dynamicReconfigureCallback(const ximea_camera::xiAPIConfig &config, uint32_t level);
     bool dynamicReconfigureFloat(const char *param, float value);
     bool dynamicReconfigureInt(const char *param, int value);
+    bool updateCameraInfoROI(void);
 
     ros::Time getTimestamp();
 
