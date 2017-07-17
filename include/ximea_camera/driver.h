@@ -102,7 +102,6 @@ class Driver{
     std::string serial_no_;
     int cams_on_bus_;
     int bandwidth_safety_margin_;
-    int frame_rate_;
     int bandwidth_;
 
     float allocated_bandwidth_;

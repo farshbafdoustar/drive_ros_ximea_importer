@@ -277,10 +277,6 @@ int Driver::readParamsFromFile(std::string file_name) {
     } catch (std::runtime_error) {}
 
     try {
-        frame_rate_ = doc["frame_rate"].as<int>();
-    } catch (std::runtime_error) {}
-
-    try {
         allocated_bandwidth_ = doc["allocated_bandwidth"].as<float>();
     } catch (std::runtime_error) { std::cerr << "missing parameter allocated_bandwidth. "
                                                 "this is mandatory!\n";
