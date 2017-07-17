@@ -1,8 +1,11 @@
 <launch>
 
+<!-- vehicle name e.g. cc2017_car -->
+<arg name="vehicle" default="cc2017_car"/>
+
 <!-- Camera Node -->
 <node name="ximea" pkg="ximea_camera" type="ximea_camera_node" output="screen" >
-  <rosparam param="camera_param_file_paths" subst_value="true">[$(find ximea_camera)/config/config_cc2017_car.yaml]</rosparam>
+  <rosparam param="camera_param_file_paths" subst_value="true">[$(find ximea_camera)/config/config_$(arg vehicle).yaml]</rosparam>
   <param name="frame_rate" type="double" value="100.0" />
 </node>
 
