@@ -66,10 +66,11 @@ bool RosDriver::updateCameraInfoROI(void) {
 
   sensor_msgs::CameraInfo camera_info = cam_info_manager_->getCameraInfo();
 
-  camera_info.roi.x_offset = offset_x;
-  camera_info.roi.y_offset = offset_y;
-  camera_info.roi.width = width;
-  camera_info.roi.height = height;
+  camera_info.roi.x_offset =  static_cast<unsigned int>(offset_x);
+  camera_info.roi.y_offset =  static_cast<unsigned int>(offset_y);
+  camera_info.roi.width =     static_cast<unsigned int>(width);
+  camera_info.roi.height =    static_cast<unsigned int>(height);
+  camera_info.roi.do_rectify = true;
 
   ROS_INFO_STREAM("Update Camera Info ROI: x_off=" << offset_x <<
                                          " y_off=" << offset_y <<
