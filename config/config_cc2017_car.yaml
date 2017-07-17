@@ -1,5 +1,5 @@
 serial_no: "04653450"
-cam_name: "cam_cc2017_car"
+cam_name: "camera"
 yaml_url: "package://ximea_camera/calibrations/cali_cc2017_car.yaml"
 allocated_bandwidth: 1.0
 image_data_format: "XI_RAW8"
