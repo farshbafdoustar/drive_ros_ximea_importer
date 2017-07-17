@@ -114,6 +114,9 @@ void RosDriver::publishImage(const ros::Time & ts) {
     // store value in ros msg
     ros_image_.header.stamp = ts;
 
+    // set header
+    ros_image_.header.frame_id = cam_name_;
+
     // setup image parameters
     ros_image_.data.resize(cam_buffer_size_);
     ros_image_.encoding = encoding_;
