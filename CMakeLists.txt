@@ -32,16 +32,18 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   image_transport
   sensor_msgs
+  std_msgs
   camera_info_manager
   roslint
   nodelet
   dynamic_reconfigure
+  cv_bridge
 )
 
-find_package(Boost REQUIRED COMPONENTS system thread)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system thread)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -117,7 +119,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ximea_camera
-  CATKIN_DEPENDS roscpp nodelet
+  CATKIN_DEPENDS roscpp nodelet cv_bridge
   #DEPENDS system_lib TinyXML
   #DEPENDS boost
 )
@@ -135,6 +137,7 @@ include_directories(
   ${XIMEA_INCLUDE_PATH}
   ${catkin_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 ## link against lib path
@@ -142,6 +145,9 @@ link_directories(${XIMEA_LIBRARY_PATH})
 
 ## main node executable
 add_executable(ximea_camera_node  src/ros_node.cpp src/driver.cpp src/ros_driver.cpp src/ros_cluster.cpp )
+
+## homography publischer executable
+add_executable(homography_publisher  src/ros_homography_publischer.cpp)
 
 ## nodelet library
 add_library(ximea_camera_nodelet src/ros_nodelet.cpp src/driver.cpp src/ros_driver.cpp )
@@ -156,6 +162,7 @@ add_executable(ximea_camera_generate_cfg src/generate_cfg.cpp)
 
 # make sure configure headers are built before any node using them
 add_dependencies(ximea_camera_node ${PROJECT_NAME}_gencfg)
+add_dependencies(homography_publisher ${PROJECT_NAME}_gencfg)
 add_dependencies(ximea_camera_nodelet ${PROJECT_NAME}_gencfg)
 
 ## Specify libraries to link a library or executable target against
@@ -164,6 +171,13 @@ target_link_libraries(ximea_camera_node
   ${catkin_LIBRARIES}
   yaml-cpp
   ${Boost_LIBRARIES}
+)
+
+target_link_libraries(homography_publisher
+  ${XIMEA_LIBRARY}
+  ${catkin_LIBRARIES}
+  ${Boost_LIBRARIES}
+  ${OpenCV_LIBS}
 )
 
 target_link_libraries(ximea_camera_nodelet
@@ -210,6 +224,13 @@ target_link_libraries(ximea_camera_generate_cfg
 
 ## Mark executables and/or libraries for installation
 install(TARGETS ximea_camera_node
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+## Mark executables and/or libraries for installation
+install(TARGETS homography_publisher
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
