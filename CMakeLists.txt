@@ -38,6 +38,7 @@ find_package(catkin REQUIRED COMPONENTS
   nodelet
   dynamic_reconfigure
   cv_bridge
+  drive_ros_msgs
 )
 
 
@@ -119,7 +120,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ximea_camera
-  CATKIN_DEPENDS roscpp nodelet cv_bridge
+  CATKIN_DEPENDS roscpp nodelet cv_bridge drive_ros_msgs
   #DEPENDS system_lib TinyXML
   #DEPENDS boost
 )
@@ -146,8 +147,9 @@ link_directories(${XIMEA_LIBRARY_PATH})
 ## main node executable
 add_executable(ximea_camera_node  src/ros_node.cpp src/driver.cpp src/ros_driver.cpp src/ros_cluster.cpp )
 
-## homography publischer executable
-add_executable(homography_publisher  src/ros_homography_publischer.cpp)
+## homography publisher executable
+add_executable(homography_publisher src/ros_homography_publisher.cpp)
+add_dependencies(homography_publisher drive_ros_msgs_generate_messages_cpp)
 
 ## nodelet library
 add_library(ximea_camera_nodelet src/ros_nodelet.cpp src/driver.cpp src/ros_driver.cpp )

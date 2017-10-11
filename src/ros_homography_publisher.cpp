@@ -3,7 +3,7 @@
 #include <drive_ros_msgs/Homography.h>
 
 int main(int argc, char ** argv) {
-    ros::init(argc, argv, "homography_publischer");
+    ros::init(argc, argv, "homography_publisher");
     ros::NodeHandle nh;
     ros::NodeHandle pnh("~");
     int pub_rate;
@@ -15,8 +15,7 @@ int main(int argc, char ** argv) {
     pnh.getParam("pub_topic", pub_topic);
     ros::Rate loop(pub_rate);
 
-    ros::Publisher pub = nh.advertise<drive_ros_msgs::Homography>(pub_topic, 1);
-
+    ros::Publisher pub = nh.advertise<drive_ros_msgs::Homography>(pub_topic, 1, true);
 
     if(param_file_path.empty())
     {
