@@ -2,13 +2,12 @@
 
 <!-- vehicle name e.g. cc2017_car -->
 <arg name="vehicle" default="cc2017_car"/>
+<arg name="scan_topic" default="camera_info"/>
+<arg name="homography_topic" default="/camera/camera_homography"/>
 
-<!-- homography_publischer Node -->
 <node name="homography_publisher" pkg="ximea_camera" type="homography_publisher" output="screen" >
   <rosparam param="param_file_path" subst_value="true">$(find ximea_camera)/calibrations/homography_$(arg vehicle).yaml</rosparam>
-  <rosparam param="pub_topic" subst_value="true">/camera/camera_homog</rosparam>
-  <param name="pub_rate" type="double" value="10.0" />
-
+  <remap from="homography_out" to="$(arg homography_topic)"/>
 </node>
 
 </launch>

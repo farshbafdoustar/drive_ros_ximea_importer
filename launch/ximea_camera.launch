@@ -9,7 +9,7 @@
   <param name="frame_rate" type="double" value="100.0" />
 </node>
 
-<!-- homography publischer -->
-<include file="$(find ximea_camera)/launch/homography_publischer_only.launch" />
+<!-- homography publisher -->
+<include file="$(find ximea_camera)/launch/homography_publisher.launch" />
 
 </launch>

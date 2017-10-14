@@ -6,26 +6,12 @@ int main(int argc, char ** argv) {
     ros::init(argc, argv, "homography_publisher");
     ros::NodeHandle nh;
     ros::NodeHandle pnh("~");
-    int pub_rate;
-    std::string pub_topic;
+
+    ros::Publisher pub = nh.advertise<drive_ros_msgs::Homography>("homography_out", 1, true);
     std::string param_file_path;
-
-    pnh.param<int>("pub_rate", pub_rate, 10);
-    pnh.getParam("param_file_path", param_file_path);
-    pnh.getParam("pub_topic", pub_topic);
-    ros::Rate loop(pub_rate);
-
-    ros::Publisher pub = nh.advertise<drive_ros_msgs::Homography>(pub_topic, 1, true);
-
-    if(param_file_path.empty())
+    if(!pnh.getParam("param_file_path", param_file_path))
     {
       ROS_ERROR_STREAM("'param_file_path' is empty");
-      return 1;
-    }
-
-    if(pub_topic.empty())
-    {
-      ROS_ERROR("'pub_topic' is empty");
       return 1;
     }
 
@@ -74,12 +60,9 @@ int main(int argc, char ** argv) {
         }
     }
 
+    // since the topic is latched we publish only once
+    pub.publish(msg);
+    ros::spinOnce();
 
-    ROS_INFO_STREAM("Publishing homography data on: " << pub_topic << " with: "<< pub_rate);
-    while (ros::ok()) {
-        ros::spinOnce();
-        pub.publish(msg);
-        loop.sleep();
-    }
-    return 1;
+    while (true) { if (!ros::ok()) {ros::shutdown(); break;}};
 }
