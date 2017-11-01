@@ -58,23 +58,31 @@ image_data_format: "XI_RAW8"
 * `yaml_url` is the location of the calibration information file, which is used by the camera info manager to publish the calibration parameters (calibration file can be created with [ROS Camera Calibrator](http://wiki.ros.org/camera_calibration))
 * `allocated_bandwidth` refers to the usb3 bandwidth fraction you want to assign to this camera (use 1.0 if you have one cam and 0.5 for two etc)
 * `image_data_format`: sets the data format for the image. Currently, formats `XI_MONO16`, `XI_RGB24`, `XI_RGB32`, `XI_RAW8`, `XI_RAW16`, and `XI_MONO8` are supported
+* `camera_frame`: frame of camera info message
 
 ## 3.2) Launch File
 Create a launch file for your camera configuration.  A typical launch file will look as follows:
 
 ```
 <launch>
-  <!-- Camera Node -->
-  <node name="ximea" pkg="ximea_camera" type="ximea_camera_node" output="screen" >
-    <rosparam param="camera_param_file_paths" subst_value="true">[$(find ximea_camera)/config/config_cc2017_car.yaml]</rosparam>
-  </node>
+<!-- Camera Node -->
+<node name="ximea" pkg="drive_ros_ximea_importer" type="ximea_camera_node" output="screen" >
+  <rosparam param="camera_param_file_paths" subst_value="true">[$(find drive_ros_ximea_importer)/config/<config_file>.yaml]</rosparam>
+  <param name="frame_rate" type="double" value="100.0" />
+</node>
+
+<!-- homography publisher -->
+<node name="homography_publisher" pkg="drive_ros_ximea_importer" type="homography_publisher" output="screen" >
+  <rosparam param="param_file_path" subst_value="true">$(find drive_ros_ximea_importer)/calibrations/<cali_file>.yaml</rosparam>
+  <remap from="homography_out" to="<output_topic>"/>
+</node>
 
 </launch>
 ```
 * `camera_param_file_paths` is a list of file names corresponding to the configuration files made for each camera in step 1.  For a single camera setup, the `camera_param_file_paths` parameter would look something like:
 
 ```
-<rosparam param="camera_param_file_paths" subst_value="true">[$(find ximea_camera)/config/config_cc2017_car.yaml]</rosparam>
+<rosparam param="camera_param_file_paths" subst_value="true">[$(find ximea_camera)/config//<config_file>.yaml]</rosparam>
 ```
 
 while a three camera setup would have a list containing the file names for the configuration files of all three cameras, separated by commas:
@@ -82,6 +90,8 @@ while a three camera setup would have a list containing the file names for the c
 ```
 <rosparam param="camera_param_file_paths" subst_value="true">[$(find ximea_camera)/config/ximea1.yaml, $(find ximea_camera)/config/ximea2.yaml, $(find ximea_camera)/config/ximea3.yaml]</rosparam>
 ```
+
+The homography publisher will publish additional homography parameters specified in `param_file_path`.
 
 ## 3.3) Start Launch File
 You should now be able to plug in the cameras and launch the file created in step 2.
