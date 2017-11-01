@@ -25,7 +25,7 @@ using ximea_camera::RosDriver;
 
 RosDriver::RosDriver(const ros::NodeHandle &nh, const ros::NodeHandle &pnh,
                      std::string cam_name, std::string serial_no,
-                     std::string yaml_url) : Driver(serial_no, cam_name) {
+                     std::string yaml_url) : Driver(serial_no, cam_name), tf_cam_info_("") {
     commonInitialize(nh);
 }
 
@@ -38,6 +38,7 @@ RosDriver::RosDriver(const ros::NodeHandle &nh, const ros::NodeHandle &pnh) : Dr
     pnh.getParam("use_cam_timestamp", use_cam_timestamp_);
     pnh.getParam("allocated_bandwidth", allocated_bandwidth_);
     pnh.getParam("image_data_format", image_data_format_);
+    pnh.getParam("camera_frame", tf_cam_info_);
 
     commonInitialize(nh);
 }
@@ -137,6 +138,7 @@ void RosDriver::publishImage(const ros::Time & ts) {
 void RosDriver::publishCamInfo(const ros::Time &ts) {
     cam_info_ = cam_info_manager_->getCameraInfo();
     cam_info_.header.stamp = ts;
+    cam_info_.header.frame_id = tf_cam_info_;
     cam_info_pub_.publish(cam_info_);
 }
 

@@ -61,6 +61,7 @@ class RosDriver : public Driver {
     image_transport::ImageTransport *it_;
     image_transport::Publisher ros_cam_pub_;
     ros::Publisher cam_info_pub_;
+    std::string tf_cam_info_;
 
     sensor_msgs::Image ros_image_;
     sensor_msgs::CameraInfo cam_info_;
