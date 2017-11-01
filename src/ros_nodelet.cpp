@@ -8,7 +8,7 @@ All rights reserved.
 ********************************************************************************/
 
 #include <string>
-#include "ximea_camera/ros_nodelet.h"
+#include "drive_ros_ximea_importer/ros_nodelet.h"
 
 using ximea_camera::RosNodelet;
 using ximea_camera::RosDriver;

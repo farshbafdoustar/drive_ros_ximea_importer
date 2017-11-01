@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <version>1.0.0</version>
-  <name>ximea_camera</name>
+  <name>drive_ros_ximea_importer</name>
   <description>ROS drivers for the ximea xiQ USB 3.0 Cameras</description>
   <author>Abdelhamid El-Bably, Arun Das, Michael Tribou, Simon Schulz</author>
   <maintainer email="ahelbably@uwaterloo.ca">Abdelhamid El-Bably</maintainer>

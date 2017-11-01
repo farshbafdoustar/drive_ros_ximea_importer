@@ -15,7 +15,7 @@ All rights reserved.
 
 #include <boost/date_time.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <ximea_camera/driver.h>
+#include <drive_ros_ximea_importer/driver.h>
 #include <exception>
 #include <sstream>
 #include <stdexcept>

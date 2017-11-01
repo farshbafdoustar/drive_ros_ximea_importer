@@ -220,7 +220,7 @@ int main(int argc, char ** argv) {
     check_xiapi_result(result, "xiOpenDevice", 0);
 
     file_output << "#!/usr/bin/env python\n"
-                << "PACKAGE = \"ximea_camera\"\n"
+                << "PACKAGE = \"drive_ros_ximea_importer\"\n"
                 << "from dynamic_reconfigure.parameter_generator_catkin import *\n"
                 << "\n"
                 << "gen = ParameterGenerator()\n\n";
@@ -273,7 +273,7 @@ int main(int argc, char ** argv) {
         }
     }
 
-    file_output << "\nexit(gen.generate(PACKAGE, \"ximea_camera\", \"xiAPI\"))\n\n";
+    file_output << "\nexit(gen.generate(PACKAGE, \"drive_ros_ximea_importer\", \"xiAPI\"))\n\n";
 
     cout << "success, wrote output to " << argv[1] << "\n";
 

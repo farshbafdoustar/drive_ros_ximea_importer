@@ -5,13 +5,13 @@
 <arg name="homography_topic" default="/camera/camera_homography"/>
 
 <!-- Camera Node -->
-<node name="ximea" pkg="ximea_camera" type="ximea_camera_node" output="screen" >
-  <rosparam param="camera_param_file_paths" subst_value="true">[$(find ximea_camera)/config/intrinsic_$(arg vehicle).yaml]</rosparam>
+<node name="ximea" pkg="drive_ros_ximea_importer" type="ximea_camera_node" output="screen" >
+  <rosparam param="camera_param_file_paths" subst_value="true">[$(find drive_ros_ximea_importer)/config/config_$(arg vehicle).yaml]</rosparam>
   <param name="frame_rate" type="double" value="100.0" />
 </node>
 
 <!-- homography publisher -->
-<include file="$(find ximea_camera)/launch/homography_publisher.launch">
+<include file="$(find drive_ros_ximea_importer)/launch/homography_publisher.launch">
     <param name="homography_topic" value="$(arg homography_topic)"/>
 </include>
 

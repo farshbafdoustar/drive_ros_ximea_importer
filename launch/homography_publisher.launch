@@ -5,8 +5,8 @@
 <arg name="scan_topic" default="camera_info"/>
 <arg name="homography_topic" default="/camera/camera_homography"/>
 
-<node name="homography_publisher" pkg="ximea_camera" type="homography_publisher" output="screen" >
-  <rosparam param="param_file_path" subst_value="true">$(find ximea_camera)/calibrations/homography_$(arg vehicle).yaml</rosparam>
+<node name="homography_publisher" pkg="drive_ros_ximea_importer" type="homography_publisher" output="screen" >
+  <rosparam param="param_file_path" subst_value="true">$(find drive_ros_ximea_importer)/calibrations/homography_$(arg vehicle).yaml</rosparam>
   <remap from="homography_out" to="$(arg homography_topic)"/>
 </node>
 

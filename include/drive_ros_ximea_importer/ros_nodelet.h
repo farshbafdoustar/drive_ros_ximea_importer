@@ -16,7 +16,7 @@ All rights reserved.
 #include <pluginlib/class_list_macros.h>
 #include <ros/ros.h>
 
-#include "ximea_camera/ros_driver.h"
+#include "drive_ros_ximea_importer/ros_driver.h"
 
 namespace ximea_camera {
 

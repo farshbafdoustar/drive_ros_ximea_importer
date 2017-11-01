@@ -18,7 +18,7 @@ All rights reserved.
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <dynamic_reconfigure/Config.h>
-#include <ximea_camera/ros_driver.h>
+#include <drive_ros_ximea_importer/ros_driver.h>
 
 #include <string>
 #include <vector>

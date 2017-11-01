@@ -1,6 +1,6 @@
 serial_no: "04653450"
 cam_name: "camera"
-yaml_url: "package://ximea_camera/calibrations/cali_cc2017_car.yaml"
+yaml_url: "package://drive_ros_ximea_importer/calibrations/intrinsic_cc2017_car.yaml"
 allocated_bandwidth: 1.0
 image_data_format: "XI_RAW8"
 camera_frame: "camera_optical"
