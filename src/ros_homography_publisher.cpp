@@ -62,7 +62,5 @@ int main(int argc, char ** argv) {
 
     // since the topic is latched we publish only once
     pub.publish(msg);
-    ros::spinOnce();
-
-    while (true) { if (!ros::ok()) {ros::shutdown(); break;}};
+    ros::spin();
 }
