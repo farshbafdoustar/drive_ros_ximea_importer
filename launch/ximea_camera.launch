@@ -10,7 +10,7 @@
 <arg name="nice_val" default="-5"/>
 
 <!-- Camera Node -->
-<node name="ximea" pkg="drive_ros_ximea_importer" type="ximea_camera_node" output="screen" launch-prefix="nice -n $(arg nice_val)">
+<node name="ximea" pkg="drive_ros_ximea_importer" type="ximea_camera_node" output="screen" launch-prefix="nice -n $(arg nice_val)" respawn="true">
   <rosparam param="camera_param_file_paths" subst_value="true">[$(find drive_ros_ximea_importer)/config/config_$(arg vehicle).yaml]</rosparam>
   <param name="frame_rate" type="double" value="100.0" />
 </node>
