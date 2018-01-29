@@ -15,6 +15,16 @@
   <param name="frame_rate" type="double" value="100.0" />
 </node>
 
+<!-- deactive unused image transport plugins -->
+<!-- https://answers.ros.org/question/255970/how-to-deactivate-image_transport-plugins/ -->
+<group ns="camera/image_raw" >
+  <rosparam param="disable_pub_plugins">
+    - 'image_transport/compressed'
+    - 'image_transport/compressedDepth'
+    - 'image_transport/theora'
+  </rosparam>
+</group>
+
 <!-- homography publisher -->
 <include file="$(find drive_ros_ximea_importer)/launch/homography_publisher.launch">
     <param name="homography_topic" value="$(arg homography_topic)"/>
