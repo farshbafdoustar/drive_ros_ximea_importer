@@ -2,7 +2,10 @@
 
 <!-- vehicle name e.g. cc2017_car -->
 <arg name="vehicle" default="cc2017_car"/>
-<arg name="homography_topic" default="/camera/camera_homography"/>
+<arg name="camera_name" default="camera"/>
+<arg name="homography_topic" default="/$(arg camera_name)/camera_homography"/>
+<arg name="use_nodelet" default="false"/>
+<arg name="nodelet_manager" default=""/>
 
 
 <!-- define nice value of process (lower means higher priority) [-20;19] -->
@@ -10,14 +13,29 @@
 <arg name="nice_val" default="-5"/>
 
 <!-- Camera Node -->
-<node name="ximea" pkg="drive_ros_ximea_importer" type="ximea_camera_node" output="screen" launch-prefix="nice -n $(arg nice_val)" respawn="true">
-  <rosparam param="camera_param_file_paths" subst_value="true">[$(find drive_ros_ximea_importer)/config/config_$(arg vehicle).yaml]</rosparam>
-  <param name="frame_rate" type="double" value="100.0" />
-</node>
+<group unless="$(arg use_nodelet)">
+    <node name="ximea" pkg="drive_ros_ximea_importer" type="ximea_camera_node" output="screen" launch-prefix="nice -n $(arg nice_val)" respawn="true">
+      <param name="cam_name" type="string" value="$(arg camera_name)"/>
+      <rosparam param="camera_param_file_paths" subst_value="true">[$(find drive_ros_ximea_importer)/config/config_$(arg vehicle).yaml]</rosparam>
+      <param name="frame_rate" type="double" value="100.0" />
+    </node>
+</group>
+
+<group if="$(arg use_nodelet)">
+    <arg if="$(eval arg('nodelet_manager') == '')" name="manager_used" value="ximea_nodelet_manager"/>
+    <arg unless="$(eval arg('nodelet_manager') == '')" name="manager_used" value="$(arg nodelet_manager)"/>
+
+    <node if="$(eval arg('nodelet_manager') == '')" pkg="nodelet" type="nodelet" name="$(arg manager_used)"  args="manager" output="$(arg output)"/>
+    <node pkg="nodelet" type="nodelet" name="ximea_camera_nodelet" args="load ximea_camera/RosNodelet $(arg manager_used)" output="$(arg output)" launch-prefix="$(arg launch-prefix)">
+        <param name="cam_name" type="string" value="$(arg camera_name)"/>
+        <rosparam param="camera_param_file_paths" subst_value="true">[$(find drive_ros_ximea_importer)/config/config_$(arg vehicle).yaml]</rosparam>
+        <param name="frame_rate" type="double" value="100.0" />
+    </node>
+</group>
 
 <!-- deactive unused image transport plugins -->
 <!-- https://answers.ros.org/question/255970/how-to-deactivate-image_transport-plugins/ -->
-<group ns="camera/image_raw" >
+<group ns="$(arg camera_name)/image_raw" >
   <rosparam param="disable_pub_plugins">
     - 'image_transport/compressed'
     - 'image_transport/compressedDepth'
