@@ -28,7 +28,7 @@ namespace ximea_camera {
 class RosCluster {
  public:
     explicit RosCluster(int num_cams);
-    explicit RosCluster(std::vector < std::string > filenames);
+    explicit RosCluster(std::vector < std::string > filenames, std::string camera_name);
     void addCamera(boost::shared_ptr<RosDriver> xd);
     void removeCamera(std::string serial_no);
 
