@@ -44,7 +44,7 @@
 
 <!-- homography publisher -->
 <include file="$(find drive_ros_ximea_importer)/launch/homography_publisher.launch">
-    <param name="homography_topic" value="$(arg homography_topic)"/>
+    <arg name="homography_topic" value="$(arg homography_topic)"/>
 </include>
 
 </launch>
