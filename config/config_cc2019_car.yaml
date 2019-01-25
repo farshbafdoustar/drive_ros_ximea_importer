@@ -1,4 +1,5 @@
 serial_no: "04653450"
+cam_name: "camera"
 yaml_url: "package://drive_ros_ximea_importer/calibrations/intrinsic_cc2019_car.yaml"
 allocated_bandwidth: 1.0
 image_data_format: "XI_RAW8"
