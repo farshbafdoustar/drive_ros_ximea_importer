@@ -21,7 +21,7 @@ using ximea_camera::RosCluster;
 using ximea_camera::RosDriver;
 using ximea_camera::Driver;
 
-std::string getCamNameFromYaml(std::string file_name, std::string camera_name) {
+std::string getCamNameFromYaml(std::string file_name) {
     std::ifstream fin(file_name.c_str());
     if (fin.fail()) {
         ROS_ERROR_STREAM("could not open file '" << file_name.c_str() << "'" << std::endl);
@@ -30,14 +30,14 @@ std::string getCamNameFromYaml(std::string file_name, std::string camera_name) {
 
     YAML::Node doc = YAML::LoadFile(file_name);
     std::string ret;
-    ret = camera_name;
+    ret = doc["cam_name"].as<std::string>();
     return ret;
 }
 
-RosCluster::RosCluster(std::vector<std::string> filenames, std::string camera_name) {
+RosCluster::RosCluster(std::vector<std::string> filenames) {
     devices_open_ = false;
     for (int i = 0 ; i < filenames.size(); i ++) {
-        std::string cam_name = getCamNameFromYaml(filenames[i], camera_name);
+        std::string cam_name = getCamNameFromYaml(filenames[i]);
         ros::NodeHandle nh(std::string("/") + cam_name);
 
         boost::shared_ptr<RosDriver> RosDriver_ptr(

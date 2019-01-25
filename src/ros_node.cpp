@@ -41,12 +41,7 @@ int main(int argc, char ** argv) {
         }
     }
 
-    std::string cam_name;
-    if (!pnh.getParam("cam_name", cam_name)) {
-        ROS_ERROR_STREAM("Unable to get parameter cam_name");
-        return 0;
-    }
-    ximea_camera::RosCluster xd(file_names, cam_name);
+    ximea_camera::RosCluster xd(file_names);
     xd.clusterInit();
 
     // TODO(myself): need to robustify against replugging and cntrlc
