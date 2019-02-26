@@ -23,12 +23,11 @@ All rights reserved.
 #include <ros/ros.h>
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/Image.h>
-#include <drive_ros_ximea_importer/driver.h>
+#include <ximea_camera/driver.h>
 
 #include <string>
 
-#include "drive_ros_ximea_importer/xiAPIConfig.h"
-
+#include "ximea_camera/xiAPIConfig.h"
 namespace ximea_camera {
 
 class RosDriver : public Driver {
@@ -49,7 +48,7 @@ class RosDriver : public Driver {
     void applyParameters();
     void commonInitialize(const ros::NodeHandle &nh);
     void attachToDynamicReconfigureServer();
-    void dynamicReconfigureCallback(const drive_ros_ximea_importer::xiAPIConfig &config, uint32_t level);
+    void dynamicReconfigureCallback(const ximea_camera::xiAPIConfig &config, uint32_t level);
     bool dynamicReconfigureFloat(const char *param, float value);
     bool dynamicReconfigureInt(const char *param, int value);
     bool updateCameraInfoROI(void);
@@ -69,7 +68,7 @@ class RosDriver : public Driver {
     int cam_buffer_size_;
     int bpp_;  // the next 2 paramaeters are used by the ros_image_transport publisher
     std::string encoding_;
-    dynamic_reconfigure::Server<drive_ros_ximea_importer::xiAPIConfig> *reconf_server_;
+    dynamic_reconfigure::Server<ximea_camera::xiAPIConfig> *reconf_server_;
 };
 
 }  // namespace ximea_camera

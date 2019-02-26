@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <version>1.0.0</version>
-  <name>drive_ros_ximea_importer</name>
+  <name>ximea_camera</name>
   <description>ROS drivers for the ximea xiQ USB 3.0 Cameras</description>
   <author>Abdelhamid El-Bably, Arun Das, Michael Tribou, Simon Schulz</author>
   <maintainer email="ahelbably@uwaterloo.ca">Abdelhamid El-Bably</maintainer>
@@ -36,9 +36,6 @@
   <run_depend>camera_info_manager</run_depend>
 
   <build_depend>roslint</build_depend>
-
-  <build_depend>drive_ros_msgs</build_depend>
-  <run_depend>drive_ros_msgs</run_depend>
 
   <build_depend>nodelet</build_depend>
   <run_depend>nodelet</run_depend>

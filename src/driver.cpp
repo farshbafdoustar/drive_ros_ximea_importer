@@ -15,7 +15,7 @@ All rights reserved.
 
 #include <boost/date_time.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <drive_ros_ximea_importer/driver.h>
+#include <ximea_camera/driver.h>
 #include <exception>
 #include <sstream>
 #include <stdexcept>
@@ -139,7 +139,7 @@ void Driver::openDevice() {
 
     applyParameters();
 
-    syncCameraTimestamp();
+    //syncCameraTimestamp();
 }
 
 void Driver::syncCameraTimestamp() {
@@ -251,9 +251,6 @@ int Driver::readParamsFromFile(std::string file_name) {
     }
 
     YAML::Node doc = YAML::LoadFile(file_name);
-    std::string tmpS;
-    int tmpI1, tmpI2, tmpI3, tmpI4;
-    bool tmpB;
 
     // FIXME: add proper exception handling!
     try {
@@ -281,6 +278,17 @@ int Driver::readParamsFromFile(std::string file_name) {
     } catch (std::runtime_error) { std::cerr << "missing parameter allocated_bandwidth. "
                                                 "this is mandatory!\n";
                                    exit(EXIT_FAILURE); }
+
+    try {
+        downsampling = doc["downsampling"].as<bool>();
+    } catch (std::runtime_error) {  }
+
+    try {
+        downsampling_type = doc["downsampling_type"].as<int>();
+    } catch (std::runtime_error) {  }
+
+    setDownsampling();
+
 
     try {
         use_cam_timestamp_ = doc["use_cam_timestamp"].as<bool>();
@@ -356,6 +364,19 @@ void Driver::limitBandwidth(float factor) {
 
     setParamInt(XI_PRM_LIMIT_BANDWIDTH , cam_bandwidth);
 }
+
+
+void Driver::setDownsampling() {
+    if (!xiH_) {
+        return;
+    }
+
+    XI_RETURN stat;
+    setParamInt(XI_PRM_DOWNSAMPLING, downsampling);
+    setParamInt(XI_PRM_DOWNSAMPLING_TYPE, downsampling_type);
+
+}
+
 
 bool Driver::setParamInt(const char *param, int var, bool global) {
     // global or device handle?

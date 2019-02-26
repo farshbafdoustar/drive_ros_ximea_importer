@@ -15,7 +15,7 @@ All rights reserved.
 
 #include <cstdlib>
 #include <sensor_msgs/image_encodings.h>
-#include <drive_ros_ximea_importer/ros_driver.h>
+#include <ximea_camera/ros_driver.h>
 
 #include <algorithm>
 #include <string>
@@ -103,7 +103,7 @@ void RosDriver::attachToDynamicReconfigureServer() {
     // immediately
     ROS_DEBUG("ximea_camera: connecting to dynamic reconfiguration server");
     ros::NodeHandle reconf_node(pnh_, "settings");
-    reconf_server_ = new dynamic_reconfigure::Server<drive_ros_ximea_importer::xiAPIConfig>(reconf_node);
+    reconf_server_ = new dynamic_reconfigure::Server<ximea_camera::xiAPIConfig>(reconf_node);
     reconf_server_->setCallback(boost::bind(&RosDriver::dynamicReconfigureCallback, this, _1, _2));
 }
 
@@ -299,7 +299,7 @@ bool RosDriver::dynamicReconfigureFloat(const char *param, float value) {
     return setParamFloat(param, value);
 }
 
-void RosDriver::dynamicReconfigureCallback(const drive_ros_ximea_importer::xiAPIConfig &config,
+void RosDriver::dynamicReconfigureCallback(const ximea_camera::xiAPIConfig &config,
                                                     uint32_t level) {
     // ignore incoming requests as long cam is not set up properly
     if (!hasValidHandle()) {
@@ -307,12 +307,12 @@ void RosDriver::dynamicReconfigureCallback(const drive_ros_ximea_importer::xiAPI
     }
 
     // use some tricks to iterate through all config entries:
-    std::vector<drive_ros_ximea_importer::xiAPIConfig::AbstractParamDescriptionConstPtr>::const_iterator _i;
+    std::vector<ximea_camera::xiAPIConfig::AbstractParamDescriptionConstPtr>::const_iterator _i;
     for (_i = config.__getParamDescriptions__().begin();
          _i != config.__getParamDescriptions__().end(); ++_i) {
         try {
             boost::any val;
-            boost::shared_ptr<const drive_ros_ximea_importer::xiAPIConfig::AbstractParamDescription>
+            boost::shared_ptr<const ximea_camera::xiAPIConfig::AbstractParamDescription>
                    description = *_i;
 
             // fetch actual value:

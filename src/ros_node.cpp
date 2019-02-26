@@ -13,7 +13,7 @@ All rights reserved.
 
 ********************************************************************************/
 
-#include <drive_ros_ximea_importer/ros_cluster.h>
+#include <ximea_camera/ros_cluster.h>
 #include <string>
 #include <vector>
 

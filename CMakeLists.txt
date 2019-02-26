@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(drive_ros_ximea_importer)
+project(ximea_camera)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -38,7 +38,6 @@ find_package(catkin REQUIRED COMPONENTS
   nodelet
   dynamic_reconfigure
   cv_bridge
-  drive_ros_msgs
 )
 
 
@@ -120,7 +119,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ximea_camera
-  CATKIN_DEPENDS roscpp nodelet cv_bridge drive_ros_msgs
+  CATKIN_DEPENDS roscpp nodelet cv_bridge
   #DEPENDS system_lib TinyXML
   #DEPENDS boost
 )
@@ -148,8 +147,8 @@ link_directories(${XIMEA_LIBRARY_PATH})
 add_executable(ximea_camera_node  src/ros_node.cpp src/driver.cpp src/ros_driver.cpp src/ros_cluster.cpp )
 
 ## homography publisher executable
-add_executable(homography_publisher src/ros_homography_publisher.cpp)
-add_dependencies(homography_publisher drive_ros_msgs_generate_messages_cpp)
+#add_executable(homography_publisher src/ros_homography_publisher.cpp)
+#add_dependencies(homography_publisher drive_ros_msgs_generate_messages_cpp)
 
 ## nodelet library
 add_library(ximea_camera_nodelet src/ros_nodelet.cpp src/driver.cpp src/ros_driver.cpp )
@@ -164,7 +163,7 @@ add_executable(ximea_camera_generate_cfg src/generate_cfg.cpp)
 
 # make sure configure headers are built before any node using them
 add_dependencies(ximea_camera_node ${PROJECT_NAME}_gencfg)
-add_dependencies(homography_publisher ${PROJECT_NAME}_gencfg)
+#add_dependencies(homography_publisher ${PROJECT_NAME}_gencfg)
 add_dependencies(ximea_camera_nodelet ${PROJECT_NAME}_gencfg)
 
 ## Specify libraries to link a library or executable target against
@@ -175,12 +174,12 @@ target_link_libraries(ximea_camera_node
   ${Boost_LIBRARIES}
 )
 
-target_link_libraries(homography_publisher
-  ${XIMEA_LIBRARY}
-  ${catkin_LIBRARIES}
-  ${Boost_LIBRARIES}
-  ${OpenCV_LIBS}
-)
+#target_link_libraries(homography_publisher
+#  ${XIMEA_LIBRARY}
+#  ${catkin_LIBRARIES}
+#  ${Boost_LIBRARIES}
+#  ${OpenCV_LIBS}
+#)
 
 target_link_libraries(ximea_camera_nodelet
   ${XIMEA_LIBRARY}
@@ -232,11 +231,11 @@ install(TARGETS ximea_camera_node
 )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS homography_publisher
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+#install(TARGETS homography_publisher
+#  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#)
 
 ## Mark executables and/or libraries for installation
 install(TARGETS ximea_camera_nodelet

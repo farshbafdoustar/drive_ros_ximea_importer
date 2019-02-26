@@ -106,16 +106,20 @@ class Driver{
 
     float allocated_bandwidth_;
 
+
  private:
     void assignDefaultValues();
     void fetchValues();
     void syncCameraTimestamp();
+    void setDownsampling();
 
     int cam_resolution_h_;
     int cam_resolution_w_;
     bool acquisition_active_;
     int image_capture_timeout_;  // max amount of time to wait for an image to come in
     unsigned char trigger_mode_;
+    bool downsampling;
+    int downsampling_type;
 };
 
 }  // namespace ximea_camera

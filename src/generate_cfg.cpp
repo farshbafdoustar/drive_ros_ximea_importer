@@ -43,9 +43,11 @@ cfg_entry_t property[] = {
     {"height", "Height of the Image provided by the device (in pixels)", "int_t"},
     {"offsetX", "Horizontal offset from the origin to the area of interest (in pixels)", "int_t"},
     {"offsetY", "Vertical offset from the origin to the area of interest (in pixels)", "int_t"}
+
 };
 
 /*
+#gen.add("downsampling", int_t, 0, "Changes image resolution by binning or skipping.", 0.5, 0, 1)
 #gen.add("offsetX", double_t, 0, "Horizontal offset from the origin to the area of interest (in pixels). ", 0.5, 0, 1)
 #gen.add("offsetY", double_t, 0, "Vertical offset from the origin to the area of interest (in pixels). ", 0.5, 0, 1)
 #gen.add("region_selector", double_t, 0, "Selects Region in Multiple ROI which parameters are set by width, height, ... ,region mode ", 0.5, 0, 1)
@@ -179,6 +181,7 @@ cfg_entry_t property[] = {
 #gen.add(":inc", double_t, 0, "Parameter increment", 0.5, 0, 1)
 #gen.add(":info", double_t, 0, "Parameter value", 0.5, 0, 1)
 #gen.add(":direct_update", double_t, 0, "Parameter modifier for direct update without stopping the streaming. E.g. XI_PRM_EXPOSURE XI_PRMM_DIRECT_UPDATE can be used with this modifier", 0.5, 0, 1)
+
 #*/
 
 
@@ -220,7 +223,7 @@ int main(int argc, char ** argv) {
     check_xiapi_result(result, "xiOpenDevice", 0);
 
     file_output << "#!/usr/bin/env python\n"
-                << "PACKAGE = \"drive_ros_ximea_importer\"\n"
+                << "PACKAGE = \"ximea_camera\"\n"
                 << "from dynamic_reconfigure.parameter_generator_catkin import *\n"
                 << "\n"
                 << "gen = ParameterGenerator()\n\n";
@@ -273,7 +276,7 @@ int main(int argc, char ** argv) {
         }
     }
 
-    file_output << "\nexit(gen.generate(PACKAGE, \"drive_ros_ximea_importer\", \"xiAPI\"))\n\n";
+    file_output << "\nexit(gen.generate(PACKAGE, \"ximea_camera\", \"xiAPI\"))\n\n";
 
     cout << "success, wrote output to " << argv[1] << "\n";
 

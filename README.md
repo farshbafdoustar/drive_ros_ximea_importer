@@ -48,17 +48,23 @@ Create a configuration file for each camera.  The configuration file should be k
 
 ```
 serial_no: "04653450"
-cam_name: "cam_cc2017_car"
-yaml_url: "package://ximea_camera/calibrations/cali_cc2017_car.yaml"
+cam_name: "cam1"
+yaml_url: "package://[project support package name]/[folder to file]/[calibration file].yaml"
 allocated_bandwidth: 1.0
 image_data_format: "XI_RAW8"
 ```
 * `serial_no` refers to the serial number of the camera
 * `cam_name` is the name you wish to give to the camera
 * `yaml_url` is the location of the calibration information file, which is used by the camera info manager to publish the calibration parameters (calibration file can be created with [ROS Camera Calibrator](http://wiki.ros.org/camera_calibration))
-* `allocated_bandwidth` refers to the usb3 bandwidth fraction you want to assign to this camera (use 1.0 if you have one cam and 0.5 for two etc)
+* 'cams_on_bus' the number of cameras on the bus
+* 'bandwidth_safety_margin'
+* `allocated_bandwidth` [mandatory to define] refers to the usb3 bandwidth fraction you want to assign to this camera (use 1.0 if you have one cam and 0.5 for two etc)
 * `image_data_format`: sets the data format for the image. Currently, formats `XI_MONO16`, `XI_RGB24`, `XI_RGB32`, `XI_RAW8`, `XI_RAW16`, and `XI_MONO8` are supported
 * `camera_frame`: frame of camera info message
+* 'use_cam_timestamp'
+* 'downsampling'
+* 'downsampling_type'
+TODO: changing the path of xiAPI.cfg to have this file for multiple camera USB2 and USB 3
 
 ## 3.2) Launch File
 Create a launch file for your camera configuration.  A typical launch file will look as follows:
@@ -91,14 +97,25 @@ while a three camera setup would have a list containing the file names for the c
 <rosparam param="camera_param_file_paths" subst_value="true">[$(find ximea_camera)/config/ximea1.yaml, $(find ximea_camera)/config/ximea2.yaml, $(find ximea_camera)/config/ximea3.yaml]</rosparam>
 ```
 
-The homography publisher will publish additional homography parameters specified in `param_file_path`.
-
 ## 3.3) Start Launch File
 You should now be able to plug in the cameras and launch the file created in step 2.
 
 ## 3.4) Dynamic Reconfigure
+To generate the parameters for the attached camera, stop ros node. the call ~/catkin_ws/devel/lib/ximea_camera/.ximea_camera_generate_cfg ../../../src/ximea_camera/cfg/xiAPI.cfg
+
 More parameters can be changed via [Dynamic Reconfigure](http://wiki.ros.org/dynamic_reconfigure). For more infos on the parameters checkout the [XiAPI Manual](http://www.ximea.com/support/wiki/apis/XiAPI_Manual). The default values can be changed in: `cfg/xiAPI.cfg` (don't forget to rebuild after changing the *.cfg file).
 
+to configure the params with GUI use:
+
+rosrun rqt_reconfigure rqt_reconfigure
+
+When you create the dynamic_reconfigure server in your node, it initializes the configuration in these steps:
+
+* Load default values as defined in the .cfg.
+* Query parameter server for each parameter, overwriting the default value if it's set.
+* Clamp all parameters to the ranges defined in the .cfg.
+
+TODO: manage camera error when the value is not setable (step vaue is not correct
 # 4) Published Topics
 
 Each set of published topics will be under the namespace corresponding to the camera name. Each camera will publish:
